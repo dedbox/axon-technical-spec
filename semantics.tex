@@ -1,0 +1,141 @@
+% Copyright © 2017 Eric Griffis <dedbox@gmail.com>
+%
+% This software may be modified and distributed under the terms of the MIT
+% license. See the LICENSE file for details.
+
+\chapter{Formal semantics}
+
+\newcommand\newId[2]{\newcommand{#1}{\ensuremath{{\tt #2}}}}
+
+\newenvironment{Grammar}
+{
+  \begin{tabular*}{\linewidth}{
+    >{$}l<{$}
+    >{$}c<{$}
+    >{$}l<{$}
+    @{\extracolsep{\fill}}
+    r}
+}{
+  \end{tabular*}
+}
+
+\newcommand\OR{\ensuremath{~\big|~}}
+
+\newId{\Start}{start}
+\newId{\Wait}{wait}
+\newId{\Stop}{stop}
+\newId{\Kill}{kill}
+\newId{\Quit}{quit}
+\newId{\Die}{die}
+\newId{\Yield}{yield}
+\newId{\Filter}{filter}
+\newId{\Give}{give}
+\newId{\Take}{take}
+\newId{\Emit}{emit}
+\newId{\Recv}{recv}
+\newId{\Commanded}{commanded}
+\newId{\Command}{command}
+\newId{\Bind}{bind}
+\newId{\Codec}{codec}
+\newId{\Encode}{encode}
+\newId{\Decode}{decode}
+\newId{\Serve}{serve}
+\newId{\Connect}{connect}
+
+\begin{center}
+  \begin{Grammar}
+    t
+    &::=& \Start~t~t~t \OR \Wait~t \OR \Stop~t \OR \Kill~t \OR \Quit \OR \Die \OR \Yield \OR & concurrent \\
+    &   & \Filter~t~t~t \OR \Give~t~t \OR \Take \OR \Emit~t \OR \Recv~t \OR & message \\
+    &   & \Commanded~t~t \OR \Command~t~t \OR \Bind~t \OR & processing \\
+    &   & \Codec~t~t \OR \Encode~t~t \OR \Decode~t~t \OR & serial \\
+    &   & \Serve~t~t~t \OR \Connect~t~t & communication \\[1ex]
+    v
+    &::=& \pi \OR a \\
+  \end{Grammar}
+\end{center}
+
+\subsection*{Concurrency}
+
+%\Pi, \Phi, \Sigma, \Gamma, \Delta |- \Process~t_1~t_2~t_3
+
+\begin{mathpar}
+  \Pi = \{\pi_i |-> (t_{start}, t_{stop}, t_{die})\}_{i < \Len{\Pi}}
+\end{mathpar}
+
+\begin{mathpar}
+  \Infer[Start]{
+    \text{choose } \pi \notin \Dom(\Pi)
+  }{
+    \Pi, \pi_0 |- \Start~t_1~t_2~t_3 --> [\pi |-> (t_1, t_2, t_3)]\Pi, \pi_0 |- \pi
+  }
+
+  \Infer[End]{
+    \Pi(\pi_0) = (v_1, t_2, t_3) \\
+    t_2 \ne \Void
+  }{
+    \Pi, \pi_0 |- v_1 --> \Pi, \pi_0 |- \Quit
+  }
+
+  \Infer[Quit]{
+    \Pi(\pi_0) = (\Quit, t_2, t_3)
+  }{
+    \Pi, \pi_0 |- \Quit --> [\pi_0 |-> (t_2, \Void, t_3)]\Pi, \pi_0 |- t_2
+  }
+
+  \Infer[Quited]{
+    \Pi(\pi_0) = (v_1, \Void, t_3) \\
+    t_3 \ne \Void
+  }{
+    \Pi, \pi_0 |- v_1 --> \Pi, \pi_0 |- \Die
+  }
+
+  \Infer[Die]{
+    \Pi(\pi_0) = (\Die, \cdot, t_3)
+  }{
+    \Pi, \pi_0 |- \Die --> [\pi_0 |-> (t_3, \Void, \Void)]\Pi, \pi_0 |- t_3
+  }
+
+  \Infer[Died]{
+    \Pi(\pi_k) = (v_{1k}, \Void, \Void) \\\\
+    \Pi(\pi_j) = (t_{1j}, \Any, \Any) \\
+    \pi_j \ne \pi_k
+  }{
+    \Pi, \pi_k |- v_{1k} --> \Pi \setminus \pi_k, \pi_j |- t_{1j}
+  }
+
+  \Infer[Yield]{
+    \Pi(\pi_j) = (t_{1j}, \Any, \Any) \\
+    \pi_j \ne \pi_k
+  }{
+    \Pi, \pi_k |- \Yield --> \Pi, \pi_j |- t_{1j}
+  }
+
+  \Infer[Wait]{
+    \pi \in \Dom(\Pi)
+  }{
+    \Pi, \pi_0 |- \Wait~\pi --> \Pi, \pi_0 |- \Wait~\pi
+  }
+
+  \Infer[Waited]{
+    \pi \notin \Dom(\Pi)
+  }{
+    \Pi, \pi_0 |- \Wait~\pi --> \Pi, \pi_0 |- \Void
+  }
+
+  \Infer[Stop]{
+    \Pi(\pi) = (\Any, t_2, t_3)
+  }{
+    \Pi, \pi_0 |- \Stop~\pi --> [\pi |-> (\Quit, t_2, t_3)]\Pi, \pi_0 |- \Wait~\pi
+  }
+
+  \Infer[Kill]{
+    \Pi(\pi) = (\Any, \Any, t_3)
+  }{
+    \Pi, \pi_0 |- \Kill~\pi --> [\pi |-> (\Die, \Void, t_3)]\Pi, \pi_0 |- \Wait~\pi
+  }
+\end{mathpar}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

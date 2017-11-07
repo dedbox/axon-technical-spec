@@ -1,0 +1,54 @@
+% Copyright © 2017 Eric Griffis <dedbox@gmail.com>
+%
+% This software may be modified and distributed under the terms of the MIT
+% license. See the LICENSE file for details.
+
+\documentclass[letterpaper,12pt]{report}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{colonequals}
+\usepackage{array}
+\usepackage{verbatim}
+\usepackage{semantic}
+\usepackage{mathpartir}
+\usepackage{natbib}
+
+
+\newcommand{\Any}{\ensuremath{\cdot}}
+\newcommand{\Void}{\ensuremath{\varnothing}}
+\newcommand{\None}{\text{-}}
+
+\newcommand{\Len}[1]{\ensuremath{\left|#1\right|}}
+
+\newcommand{\Rule}[1]{\text{\textsc{#1}}}
+\newcommand{\Infer}[3][]{\inferrule{#2}{#3}~\Rule{#1}}
+
+\mathlig{-->}{\leadsto}
+\mathlig{|->}{\mapsto}
+
+\DeclareMathOperator{\Dom}{Dom}
+\newcommand{\Mod}{\text{~mod~}}
+
+\begin{document}
+
+\input{titlepage}
+\input{copyright}
+
+\begin{abstract}
+  This is a technical reference for the Axon decentralized communications
+  library.
+\end{abstract}
+
+\tableofcontents
+\input{introduction}
+
+\appendix
+\input{semantics}
+\input{glossary}
+
+\bibliographystyle{alpha}
+\bibliography{citations.bib} 
+
+\end{document}

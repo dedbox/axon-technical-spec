@@ -1,0 +1,67 @@
+% Copyright © 2017 Eric Griffis <dedbox@gmail.com>
+%
+% This software may be modified and distributed under the terms of the MIT
+% license. See the LICENSE file for details.
+
+\chapter{Glossary}
+
+\newenvironment{Define}[2][]{\vspace*{2ex}\noindent\textbf{#2}\quad #1\\*\indent}{}
+
+% \begin{Define}[$\beta(m) \quad p \mapsto e$]{binding}
+%   An association between a structural pattern $p$ and an expression $e$ to be
+%   evaluated whenever $p$ matches some message $m$ so that the variables
+%   defined by $p$ are bound in $e$.
+% \end{Define}
+
+% \begin{Define}[$\Delta(k, m) \quad {\{k_i \to f_i \}}_i$]{dispatch}
+%   A filter that gives some message $m$ to filter $f_i$ associated with key
+%   $k_i=k$ and then immediately takes and emits a message from $f_i$.
+% \end{Define}
+
+% \begin{Define}[$f$]{filter}
+%   A process that emits a message for each one it receives, in order.
+% \end{Define}
+
+% \begin{Define}[$\mu(m) \quad {\{\beta_i\}}_i$]{match}
+%   A filter that emits message $\beta_i(m)$ whenever binding $\beta_i$ matches
+%   some message $m$.
+% \end{Define}
+
+% \begin{Define}[$m$]{message}
+%   Any data structure of the host platform, primitive or composite.
+% \end{Define}
+
+% \begin{Define}[$P \quad {\{k_i\}}_{i=1}^n$]{path}
+%   A list of lookup keys that serve as a reference to a resource on the
+%   network. Each key but the last ($k_{i<n}$) names an object, such as a
+%   function or filter, capable of resolving the next key.
+% \end{Define}
+
+% \begin{Define}[$\pi$]{process}
+%   A program that can give or take messages to or from other processes
+%   explicitly, and receive or emit messages implicitly.
+% \end{Define}
+
+% \begin{Define}[$\Pi \quad (\pi, f_{in}, f_{out})$]{proxy}
+%   A process that forwards messages to and from process $\pi$. When $\Pi$
+%   receives some message $m$, it gives $f_{in}(m)$ to $\pi$, and when it takes
+%   some message $m'$ from $\pi$, it emit $f_{out}(m')$.
+% \end{Define}
+
+% \begin{Define}[$Q$]{queue}
+%   A one-way message channel of fixed capacity and length.
+% \end{Define}
+
+% \begin{Define}[$R(P)$]{router}
+%   A filter that resolves some path $P$ and returns its target resource.
+%   Routers encapsulate the topology of process network.
+% \end{Define}
+
+% \begin{Define}[$S \quad (s_{in}, s_{out})$]{socket}
+%   A process that emits messages read from stream $s_{in}$ and writes received
+%   messages to stream $s_{out}$.
+% \end{Define}
+
+% \begin{Define}[$s$]{stream}
+%   A UTF-8 encoded character stream.
+% \end{Define}
